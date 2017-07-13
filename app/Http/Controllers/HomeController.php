@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Myapp\models\mymodel;
+use Illuminate\Support\Facades\Auth;
+use App\MasterModel;
 
 class HomeController extends Controller
 {
@@ -12,13 +13,13 @@ class HomeController extends Controller
      *
      * @return void
      */
-
-    private $model;
-
+    private $m;
+    private $c;
     public function __construct()
     {
         $this->middleware('auth');
-        $this->model = new mymodel;
+        $this->m = new MasterModel;
+        //$this->custom = new CustomModel;
     }
 
     /**
@@ -30,190 +31,29 @@ class HomeController extends Controller
     {
         return view('home');
     }
-
-    //Show
-    public function menu()
+	
+	public function explore()
     {
-        $data['menu'] = $this->model->getMenu();
-        return view ('authentication.menu', $data);
+        return view('pages/explore');
     }
-
-    public function grupMenu()
+	
+	public function profile()
     {
-        $data['menu'] = $this->model->getGroupMenu();
-        return view ('authentication.grup-menu', $data);
+		$id = Auth::user()->id;
+		$data['data'] = $this->m->getItem('users', 'id', $id);
+		$data['post'] = $this->m->getItemsById('posts', 'user_id', $id);
+		$data['follower'] = $this->m->getItemsById('followers', 'user_followed_id', $id);
+		$data['following'] = $this->m->getItemsById('followers', 'user_following_id', $id);
+		
+        return view('pages/profile', $data);
     }
-
-    public function user()
+	
+	public function detailPost($id_post)
     {
-        $data['user'] = $this->model->getUserList();
-        return view ('authentication.user', $data);
-    }
-
-    public function peran()
-    {
-        $data['peran'] = $this->model->getPeran();
-        return view ('authentication.peran', $data);
-    }
-
-    //Insert - Form
-
-    public function menuInsert()
-    {
-        $data['grupmenu'] = $this->model->getGroupMenu();
-        return view ('authentication.menu-insert', $data);
-    }
-
-    public function grupMenuInsert()
-    {
-        return view ('authentication.grup-menu-insert');
-    }
-
-    public function peranInsert()
-    {
-        return view ('authentication.peran-insert');
-    }
-
-    //Insert - Proccess
-
-    public function menuInsertProcess(Request $request)
-    {
-        $data['id_menu'] = $request->input('id_menu');
-        $data['nm_menu'] = $request->input('nm_menu');
-        $data['route'] = $request->input('route');
-        $data['id_group_menu'] = $request->input('id_group_menu');
-
-        $this->model->insertMenu($data);
-        return redirect(route('menu'));
-    }
-
-    public function grupMenuInsertProcess(Request $request)
-    {
-        $data['id_group_menu'] = $request->input('id_group_menu');
-        $data['nm_group_menu'] = $request->input('nm_group_menu');
-
-        $this->model->insertGroupMenu($data);
-        return redirect(route('grup-menu'));
-    }
-
-    public function peranInsertProcess(Request $request)
-    {
-        $data['id_peran'] = $request->input('id_peran');
-        $data['nm_peran'] = $request->input('nm_peran');
-
-        $this->model->insertPeran($data);
-        return redirect(route('peran'));
-    }
-
-    public function userPeran($id)
-    {
-        $data['user'] = $this->model->getUserDetail($id);
-        $data['peran'] = $this->model->getPeran();
-        return view('authentication.user-peran', $data);
-    }
-
-    public function userPeranProcess(Request $request)
-    {
-        $data['id_user'] = $request->input('id_user');
-        $data['id_peran'] = $request->input('peran');
-
-        if (empty($this->model->cekUserPeran($request->input('id_user')))) {
-            $this->model->insertUserPeran($data);
-        }else{
-            $this->model->updateUserPeran($data);
-        }
-
-        return redirect(route('user'));
-    }
-
-    public function menuKewenangan($id)
-    {
-        $data['peran'] = $this->model->getPeran();
-        $data['menu'] = $this->model->getDetailMenu($id);
-        return view('authentication.menu-kewenangan-insert', $data);
-    }
-
-    public function menuKewenanganProcess(Request $request)
-    {
-        $data['id_menu'] = $request->input('id_menu');
-        $data['id_peran'] = $request->input('id_peran');
-        $data['is_create'] = $request->input('create');
-        $data['is_read'] = $request->input('read');
-        $data['is_update'] = $request->input('update');
-        $data['is_delete'] = $request->input('delete');
-
-        if (empty($this->model->cekMenuKewenangan($request->input('id_menu'), $request->input('id_peran')))) {
-            $this->model->insertMenuKewenangan($data);
-        }else{
-            $this->model->updateMenuKewenangan($data);
-        }
-
-        return redirect(route('menu'));
-    }
-
-    //Delete
-
-    public function deleteMenu($id)
-    {
-        $this->model->deleteMenu($id);
-        return redirect(route('menu'));
-    }
-
-    public function deleteGrupMenu($id)
-    {
-        $this->model->deleteGroupMenu($id);
-        return redirect(route('grup-menu'));
-    }
-
-    public function deletePeran($id)
-    {
-        $this->model->deletePeran($id);
-        return redirect(route('peran'));
-    }
-
-
-
-    //Menu List
-
-    public function menuAdminRead()
-    {
-        return view('home')->with('message', 'Halaman Read Admin!`');
-    }
-
-    public function menuAdminCreate()
-    {
-        return view('home')->with('message', 'Halaman Create Admin!');
-    }
-
-    public function menuAdminUpdate()
-    {
-        return view('home')->with('message', 'Halaman Update Admin!');
-    }
-
-    public function menuAdminDelete()
-    {
-        return view('home')->with('message', 'Halaman Delete Admin!');
-    }
-
-
-
-    public function menuRootRead()
-    {
-        return view('home')->with('message', 'Halaman Read Root!`');
-    }
-
-    public function menuRootCreate()
-    {
-        return view('home')->with('message', 'Halaman Create Root!`');
-    }
-
-    public function menuRootUpdate()
-    {
-        return view('home')->with('message', 'Halaman Update Root!`');
-    }
-
-    public function menuRootDelete()
-    {
-        return view('home')->with('message', 'Halaman Delete Root!`');
+		$id = Auth::user()->id;
+		$data['dota'] = $this->m->getItem('users', 'id', $id);
+		$data['data'] = $this->m->getItem('posts', 'id', $id_post);
+		
+        return view('pages/detail_post', $data);
     }
 }

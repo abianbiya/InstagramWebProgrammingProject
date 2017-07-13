@@ -43,10 +43,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ route('menu') }}">Menu</a></li>
-                        <li><a href="{{ route('grup-menu') }}">Grup Menu</a></li>
-                        <li><a href="{{ route('user') }}">User</a></li>
-                        <li><a href="{{ route('peran') }}">Peran</a></li>
+                        &nbsp;
                     </ul>
 
                     <!-- Right Side Of Navbar -->
