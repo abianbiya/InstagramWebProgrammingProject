@@ -46,15 +46,14 @@
         <main class="_6ltyr _rnpza" role="main">
           <section class="_jx516">
             <div class="_qj7yb"><div>
-
-              @foreach ($data as $key => $value)
+              @foreach ($data[0] as $key => $value)
                 <article class="_h2d1o _j5hrx _4xyiw _j64nz">
                 <header class="_2ircu _s6yvg">
-                  <a class="_5lote _h33fs _vbtk2" href="https://www.instagram.com/kotlindevelopers/" style="width: 30px; height: 30px;">
-                    <img class="_a012k" src="./home_files/18645395_435126780199582_3752450748273655808_a.jpg">
+                  <a class="_5lote _h33fs _vbtk2" href="{{ route('profile.by.name', $value->username)}}" style="width: 30px; height: 30px;">
+                    <img class="_a012k" src="{{ asset($value->image) }}">
                   </a>
                   <div class="_hghxm">
-                    <a class="_4zhc5 notranslate _jozwt" title="kotlindevelopers" href="https://www.instagram.com/kotlindevelopers/">kotlindevelopers</a>
+                    <a class="_4zhc5 notranslate _jozwt" title="kotlindevelopers" href="{{ route('profile.by.name', $value->username)}}">{{ $value->username}}</a>
                     <div class="_lgng2"><!-- react-empty: 14 -->
                     </div>
                   </div>
@@ -63,7 +62,7 @@
                   <div>
                     <div class="_22yr2 _e0mru">
                       <div class="_jjzlb" style="padding-bottom: 96.5625%;">
-                        <img alt="#java vs #kotlin #android #developers #androiddeveloper #kotlindeveloper" class="_icyx7" id="pImage_0" src="./home_files/18947702_311030309343916_4750700559177089024_n.jpg">
+                        <img alt="#java vs #kotlin #android #developers #androiddeveloper #kotlindeveloper" class="_icyx7" id="pImage_0" src="{{ asset($value->source) }}">
                       </div><!-- react-empty: 20 -->
                       <div class="_ovg3g"></div>
                     </div>
@@ -80,20 +79,15 @@
                   </section>
                   <section class="_hhrfo _tgw0a">
                     <div class="_kkf84 _oajsw"><!-- react-text: 32 --><!-- /react-text -->
-                      <a class="_4zhc5 notranslate _lx2l2" title="erek_d" href="https://www.instagram.com/erek_d/">erek_d</a><!-- react-text: 34 -->, <!-- /react-text -->
-                      <a class="_4zhc5 notranslate _lx2l2" title="androidegitim" href="https://www.instagram.com/androidegitim/">androidegitim</a><!-- react-text: 36 -->, <!-- /react-text -->
-                      <a class="_4zhc5 notranslate _lx2l2" title="techtorium" href="https://www.instagram.com/techtorium/">techtorium</a><!-- react-text: 38 --> and <!-- /react-text -->
-                      <a class="_4zhc5 notranslate _lx2l2" title="tomzpot_" href="https://www.instagram.com/tomzpot_/">tomzpot_</a><!-- react-text: 40 --> like this<!-- /react-text -->
-                    </div>
+                        </div>
                   </section>
                   <div class="_31wak _819mv">
                     <ul class="_h3rdq">
                       <li class="_99ch8">
-                        <a class="_4zhc5 notranslate _ebg8h" title="kotlindevelopers" href="https://www.instagram.com/kotlindevelopers/">kotlindevelopers</a>
+                        <a class="_4zhc5 notranslate _ebg8h" title="kotlindevelopers" href="{{ route('profile.by.name', $value->username)}}">{{ $value->username }}</a>
                         <span>
                           <span>
-                            <a href="https://www.instagram.com/explore/tags/java/">#java</a>
-                            <span> vs </span><a href="https://www.instagram.com/explore/tags/kotlin/">#kotlin</a><span> </span><a href="https://www.instagram.com/explore/tags/android/">#android</a><span> </span><a href="https://www.instagram.com/explore/tags/developers/">#developers</a><span> </span><a href="https://www.instagram.com/explore/tags/androiddeveloper/">#androiddeveloper</a><span> </span><a href="https://www.instagram.com/explore/tags/kotlindeveloper/">#kotlindeveloper</a>
+                            {{ $value->caption}}
                           </span>
                         </span>
                       </li>

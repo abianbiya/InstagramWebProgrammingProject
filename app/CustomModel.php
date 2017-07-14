@@ -36,14 +36,14 @@ class CustomModel{
     public function getPosts()
     {
         $id = Auth::user()->id;
-        $data['user_followed'] = DB::table('followers')->leftJoin('users', 'followers.user_following_id', 'users.id')->where('user_following_id', $id)->get();
-        foreach ($data['user_followed'] as $key => $value) {
-            $data['postnya'] = array();
-            $pos = DB::table('posts')->where('user_id', $value->user_followed_id)->get();
-            array_push($data['postnya'], $pos);
+        $dota['user_followed'] = DB::table('followers')->leftJoin('users', 'followers.user_followed_id', 'users.id')->where('user_following_id', $id)->get();
+        foreach ($dota['user_followed'] as $key => $value) {
+            $data = array();
+            $pos = DB::table('posts')->leftJoin('users', 'users.id', 'posts.user_id')->where('user_id', $value->user_followed_id)->get();
+            array_push($data, $pos);
         }
-        dd($data['postnya']);
-        //return DB::table('posts')->leftJoin('users', 'posts.user_id', 'users.id')->where('')
+        //dd($data['postnya']);
+        return $data;
     }
 
 

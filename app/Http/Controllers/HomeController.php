@@ -31,6 +31,7 @@ class HomeController extends Controller
     public function index()
     {
         $data['data'] = $this->c->getPosts();
+        //print_r($data); die();
         return view('home', $data);
     }
 
